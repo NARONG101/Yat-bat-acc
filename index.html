@@ -335,8 +335,11 @@ audio { display: none; }
 </div>
 
 <!-- 🎵 MUSIC -->
-<audio id="music" loop>
+<audio id="music" loop preload="auto" controls style="display:none;">
     <source src="love.mp3" type="audio/mpeg">
+    <source src="love.mp3" type="audio/mp3">
+    <source src="love.mp3" type="audio/x-mpeg">
+    Your browser does not support the audio element.
 </audio>
 
 <!-- 💖 Romantic floating elements -->
@@ -349,13 +352,90 @@ audio { display: none; }
 const intro = document.getElementById("intro");
 const music = document.getElementById("music");
 
-/* Play music on user interaction */
-document.addEventListener('click', function tryPlayMusic() {
-    music.volume = 0.3; // Perfect background volume (30%)
-    music.currentTime = 59; // Start playing from 59 seconds
-    music.play().catch(e => console.log("Music play failed:", e));
-    document.removeEventListener('click', tryPlayMusic);
-}, { once: true });
+/* Initialize audio with error handling */
+music.addEventListener('error', function(e) {
+    console.error('Audio error:', e);
+});
+
+music.addEventListener('canplay', function() {
+    console.log('Audio can play');
+});
+
+music.addEventListener('canplaythrough', function() {
+    console.log('Audio can play through');
+});
+
+/* Try to autoplay with muted sound first (browser policy workaround) */
+function tryAutoPlay() {
+    music.volume = 0; // Start muted to comply with autoplay policies
+    music.currentTime = 59;
+    music.play().then(() => {
+        console.log("Autoplay started (muted)");
+        
+        // Gradually fade in volume after a short delay
+        setTimeout(() => {
+            const fadeIn = setInterval(() => {
+                if (music.volume < 0.3) {
+                    music.volume = Math.min(music.volume + 0.05, 0.3);
+                } else {
+                    clearInterval(fadeIn);
+                }
+            }, 200);
+        }, 1000);
+        
+    }).catch(error => {
+        console.log("Autoplay failed (expected due to browser policy):", error);
+        // Fall back to click-to-play
+        setupClickToPlay();
+    });
+}
+
+/* Fallback: Play music on user interaction */
+function setupClickToPlay() {
+    function tryPlayMusic() {
+        music.volume = 0.3; // Perfect background volume (30%)
+        
+        // Try to set currentTime (some browsers restrict this before play)
+        try {
+            music.currentTime = 59; // Start playing from 59 seconds
+        } catch (e) {
+            console.log("Cannot set currentTime before play:", e);
+            music.currentTime = 0;
+        }
+        
+        music.play().then(() => {
+            console.log("Music started successfully");
+        }).catch(error => {
+            console.error("Music play failed:", error);
+        });
+        
+        document.removeEventListener('click', tryPlayMusic);
+        document.removeEventListener('touchstart', tryPlayMusic);
+    }
+    
+    document.addEventListener('click', tryPlayMusic);
+    document.addEventListener('touchstart', tryPlayMusic);
+    
+    // Add instruction for user
+    const instruction = document.createElement('div');
+    instruction.style.position = 'fixed';
+    instruction.style.bottom = '20px';
+    instruction.style.left = '50%';
+    instruction.style.transform = 'translateX(-50%)';
+    instruction.style.color = 'white';
+    instruction.style.fontSize = '16px';
+    instruction.style.zIndex = '1000';
+    instruction.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    instruction.style.padding = '10px 20px';
+    instruction.style.borderRadius = '20px';
+    instruction.style.pointerEvents = 'none';
+    instruction.textContent = '🎵 Click anywhere to start background music';
+    document.body.appendChild(instruction);
+    setTimeout(() => instruction.remove(), 10000);
+}
+
+// Try autoplay first
+tryAutoPlay();
 
 /* Snow */
 const snowInterval = setInterval(() => {
