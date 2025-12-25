@@ -213,60 +213,72 @@ body {
     opacity: 0.7;
 }
 
-/* Professional Collage Layout */
+/* Simple Fixed Collage Layout */
 .collage-showcase {
     position: absolute;
     width: 100%;
     height: 100%;
     overflow: hidden;
     perspective: 1500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Mobile scaling - maintain exact same layout but scale to fit screen */
+@media (max-width: 768px) {
+    .collage-showcase {
+        transform: scale(0.6); /* Scale down proportionally on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .collage-showcase {
+        transform: scale(0.4); /* Scale down more on small phones */
+    }
 }
 
 .collage-track {
     display: flex;
-    width: calc(200vw + 100px); /* Use viewport width for better mobile compatibility */
-    height: 100%;
+    width: 1850px; /* Fixed: 2*(4*200px + 3*25px + 2*20px) */
+    height: 640px; /* Fixed: 3*200px + 2*25px + 2*20px */
     animation: smoothLoop 60s linear infinite;
 }
 
 .collage-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 200px); /* Fixed 200px columns */
+    grid-template-rows: repeat(3, 200px); /* Fixed 200px rows */
     gap: 25px;
-    width: calc(100vw - 60px); /* Use viewport width */
-    height: 80vh; /* Fixed height for better visibility */
-    padding: 30px;
+    padding: 20px;
     box-sizing: border-box;
-    justify-content: center;
-    align-content: center;
-    transform-style: preserve-3d;
-    animation: globalPulse 12s ease-in-out infinite alternate;
     flex-shrink: 0; /* Prevent grid from shrinking */
     margin: 0 10px; /* Add small margin between grids */
 }
 
-/* Perfect Seamless Looping Animation */
-@keyframes smoothLoop {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-100vw - 100px)); }
-}
-
-@keyframes globalPulse {
-    0%, 100% { transform: scale(1) rotateY(0deg); }
-    50% { transform: scale(1.01) rotateY(0.5deg); }
-}
-
+/* Fixed pixel sizing for consistency */
 .collage-photo {
     position: relative;
+    width: 200px; /* Fixed width */
+    height: 200px; /* Fixed height */
     overflow: hidden;
     border-radius: 18px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.8);
     transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
     background: rgba(0,0,0,0.3);
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+}
+
+/* Perfect Seamless Looping Animation */
+@keyframes smoothLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-850px); /* Move exactly one grid width */ }
+}
+
+@keyframes globalPulse {
+    0%, 100% { transform: scale(1) rotateY(0deg); }
+    50% { transform: scale(1.01) rotateY(0.5deg); }
 }
 
 .collage-photo:hover {
@@ -282,6 +294,21 @@ body {
     transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     filter: brightness(1.08) contrast(1.12) saturate(1.18);
     transform: scale(1.0);
+}
+
+/* Fixed image container size for consistency */
+.collage-photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+    transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+    background: rgba(0,0,0,0.3);
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+    aspect-ratio: 1 / 1; /* Force square aspect ratio */
+    min-width: 150px; /* Minimum size for consistency */
+    min-height: 150px; /* Minimum size for consistency */
 }
 
 .collage-photo:hover .collage-image {
@@ -371,93 +398,6 @@ img {
 }
 
 
-/* Responsive Moving Collage */
-@media (max-width: 1024px) {
-    .collage-grid {
-        width: calc(100vw - 40px);
-        gap: 20px;
-        padding: 20px;
-    }
-    
-    .collage-track {
-        width: calc(200vw + 80px);
-        animation: smoothLoop 50s linear infinite;
-    }
-}
-
-@media (max-width: 768px) {
-    .collage-grid {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(4, 1fr);
-        width: calc(100vw - 30px);
-        height: calc(100vh - 60px);
-        gap: 15px;
-        padding: 15px;
-        margin: 0 auto;
-    }
-    
-    .collage-photo {
-        border-radius: 14px;
-        min-height: 120px;
-    }
-    
-    .collage-track {
-        width: calc(200vw + 60px);
-        animation: smoothLoop 40s linear infinite;
-    }
-}
-
-@media (max-width: 480px) {
-    .collage-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(6, 1fr);
-        width: calc(100vw - 20px);
-        height: calc(100vh - 40px);
-        gap: 12px;
-        padding: 10px;
-        margin: 0 auto;
-    }
-    
-    .collage-photo {
-        border-radius: 12px;
-        min-height: 100px;
-    }
-    
-    .collage-photo::before {
-        background:
-            radial-gradient(circle at top left, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%),
-            radial-gradient(circle at top right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%),
-            radial-gradient(circle at bottom left, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%),
-            radial-gradient(circle at bottom right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%);
-    }
-    
-    .collage-track {
-        width: calc(200vw + 40px);
-        animation: smoothLoop 30s linear infinite;
-    }
-    
-    .collage-showcase {
-        overflow: visible;
-    }
-}
-
-@media (max-width: 360px) {
-    .collage-grid {
-        gap: 10px;
-        padding: 8px;
-        height: calc(100vh - 30px);
-    }
-    
-    .collage-photo {
-        border-radius: 10px;
-        min-height: 80px;
-    }
-    
-    .collage-track {
-        width: calc(200vw + 32px);
-        animation: smoothLoop 25s linear infinite;
-    }
-}
 
 
 /* Vignette */
