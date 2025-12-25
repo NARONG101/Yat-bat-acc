@@ -24,6 +24,43 @@ body {
     background: black;
 }
 
+/* Responsive font sizes */
+@media (max-width: 768px) {
+    .type {
+        font-size: 3vw;
+    }
+    .heart {
+        font-size: 6vw;
+    }
+    .xmas {
+        font-size: 3vw;
+    }
+    h1 {
+        font-size: 12vw;
+    }
+    p {
+        font-size: 3vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .type {
+        font-size: 4vw;
+    }
+    .heart {
+        font-size: 8vw;
+    }
+    .xmas {
+        font-size: 4vw;
+    }
+    h1 {
+        font-size: 15vw;
+    }
+    p {
+        font-size: 4vw;
+    }
+}
+
 /* ===== 🎬 INTRO ===== */
 .intro {
     position: absolute;
@@ -188,7 +225,7 @@ body {
 
 .collage {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 6px;
     width: 100vw;
     height: 100vh;
@@ -208,7 +245,40 @@ body {
     backface-visibility: hidden;
     transform: translateZ(0);
     transition: transform 0.3s ease, filter 0.3s ease;
-    aspect-ratio: 1 / 1; /* Ensure consistent size based on picture six */
+    aspect-ratio: 1 / 1;
+    object-position: center;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: pixelated;
+}
+
+/* Ensure images load properly and maintain quality */
+.collage img {
+    content-visibility: auto;
+    contain-intrinsic-size: 200px;
+}
+
+/* Responsive adjustments for different screen sizes */
+@media (max-width: 768px) {
+    .collage {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 4px;
+        padding: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .collage {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 3px;
+        padding: 3px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .collage {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 8px;
+    }
 }
 
 @keyframes slide {
