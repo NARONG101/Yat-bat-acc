@@ -224,7 +224,7 @@ body {
 
 .collage-track {
     display: flex;
-    width: calc(200vh + 100px); /* Exact calculation: 2*(100vh + 50px gap + 60px padding) */
+    width: calc(200vw + 100px); /* Use viewport width for better mobile compatibility */
     height: 100%;
     animation: smoothLoop 60s linear infinite;
 }
@@ -234,8 +234,8 @@ body {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 25px;
-    width: calc(100vh - 60px); /* Account for padding */
-    height: calc(100% - 60px); /* Account for padding */
+    width: calc(100vw - 60px); /* Use viewport width */
+    height: 80vh; /* Fixed height for better visibility */
     padding: 30px;
     box-sizing: border-box;
     justify-content: center;
@@ -249,7 +249,7 @@ body {
 /* Perfect Seamless Looping Animation */
 @keyframes smoothLoop {
     0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-100vh - 100px)); }
+    100% { transform: translateX(calc(-100vw - 100px)); }
 }
 
 @keyframes globalPulse {
@@ -374,13 +374,13 @@ img {
 /* Responsive Moving Collage */
 @media (max-width: 1024px) {
     .collage-grid {
-        width: calc(100vh - 40px);
+        width: calc(100vw - 40px);
         gap: 20px;
         padding: 20px;
     }
     
     .collage-track {
-        width: calc(200vh + 80px);
+        width: calc(200vw + 80px);
         animation: smoothLoop 50s linear infinite;
     }
 }
@@ -389,17 +389,20 @@ img {
     .collage-grid {
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(4, 1fr);
-        width: calc(100vh - 30px);
+        width: calc(100vw - 30px);
+        height: calc(100vh - 60px);
         gap: 15px;
         padding: 15px;
+        margin: 0 auto;
     }
     
     .collage-photo {
         border-radius: 14px;
+        min-height: 120px;
     }
     
     .collage-track {
-        width: calc(200vh + 60px);
+        width: calc(200vw + 60px);
         animation: smoothLoop 40s linear infinite;
     }
 }
@@ -408,13 +411,16 @@ img {
     .collage-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(6, 1fr);
-        width: calc(100vh - 20px);
+        width: calc(100vw - 20px);
+        height: calc(100vh - 40px);
         gap: 12px;
         padding: 10px;
+        margin: 0 auto;
     }
     
     .collage-photo {
         border-radius: 12px;
+        min-height: 100px;
     }
     
     .collage-photo::before {
@@ -426,8 +432,12 @@ img {
     }
     
     .collage-track {
-        width: calc(200vh + 40px);
+        width: calc(200vw + 40px);
         animation: smoothLoop 30s linear infinite;
+    }
+    
+    .collage-showcase {
+        overflow: visible;
     }
 }
 
@@ -435,14 +445,16 @@ img {
     .collage-grid {
         gap: 10px;
         padding: 8px;
+        height: calc(100vh - 30px);
     }
     
     .collage-photo {
         border-radius: 10px;
+        min-height: 80px;
     }
     
     .collage-track {
-        width: calc(200vh + 32px);
+        width: calc(200vw + 32px);
         animation: smoothLoop 25s linear infinite;
     }
 }
