@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Merry Christmas ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 
 <style>
 /* ===== GLOBAL ===== */
@@ -210,103 +213,240 @@ body {
     opacity: 0.7;
 }
 
-/* Image quality enhancement */
-.collage img:hover {
-    transform: scale(1.02) translateZ(5px);
-    filter: brightness(1.05) contrast(1.05);
-    z-index: 10;
+/* Professional Collage Layout */
+.collage-showcase {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    perspective: 1500px;
 }
 
-.track {
+.collage-track {
     display: flex;
-    width: max-content;
-    animation: slide 60s linear infinite;
+    width: calc(200vh + 100px); /* Exact calculation: 2*(100vh + 50px gap + 60px padding) */
+    height: 100%;
+    animation: smoothLoop 60s linear infinite;
 }
 
-.collage {
+.collage-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 6px;
-    width: 100vw;
-    height: 100vh;
-    padding: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 25px;
+    width: calc(100vh - 60px); /* Account for padding */
+    height: calc(100% - 60px); /* Account for padding */
+    padding: 30px;
     box-sizing: border-box;
-    animation: zoom 20s ease-in-out infinite alternate;
-    perspective: 1000px;
+    justify-content: center;
+    align-content: center;
+    transform-style: preserve-3d;
+    animation: globalPulse 12s ease-in-out infinite alternate;
+    flex-shrink: 0; /* Prevent grid from shrinking */
+    margin: 0 10px; /* Add small margin between grids */
 }
 
-.collage img {
+/* Perfect Seamless Looping Animation */
+@keyframes smoothLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-100vh - 100px)); }
+}
+
+@keyframes globalPulse {
+    0%, 100% { transform: scale(1) rotateY(0deg); }
+    50% { transform: scale(1.01) rotateY(0.5deg); }
+}
+
+.collage-photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8);
+    transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+    background: rgba(0,0,0,0.3);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.collage-photo:hover {
+    transform: translateY(-10px) translateZ(20px) rotateY(3deg) rotateX(2deg) !important;
+    box-shadow: 0 20px 60px rgba(255,255,255,0.9) !important;
+    z-index: 20;
+}
+
+.collage-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 6px;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    transition: transform 0.3s ease, filter 0.3s ease;
-    aspect-ratio: 1 / 1;
-    object-position: center;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: pixelated;
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    filter: brightness(1.08) contrast(1.12) saturate(1.18);
+    transform: scale(1.0);
 }
 
-/* Ensure images load properly and maintain quality */
-.collage img {
-    content-visibility: auto;
-    contain-intrinsic-size: 200px;
+.collage-photo:hover .collage-image {
+    transform: scale(1.2) rotate(1.5deg);
+    filter: brightness(1.15) contrast(1.15) saturate(1.25);
 }
 
-/* Responsive adjustments for different screen sizes */
+/* Professional Black Corner Shadows */
+.collage-photo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at top left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 25%),
+        radial-gradient(circle at top right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 25%),
+        radial-gradient(circle at bottom left, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 25%),
+        radial-gradient(circle at bottom right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 25%);
+    border-radius: 18px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.9;
+    transition: opacity 0.4s ease;
+}
+
+.collage-photo:hover::before {
+    opacity: 0.6;
+}
+
+/* Inner Glow Effect */
+.collage-photo::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    border-radius: 16px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.8;
+}
+
+/* Individual Photo Animations */
+@keyframes photoFloat {
+    0%, 100% {
+        transform: translateZ(0) rotateY(0deg) rotateX(0deg) scale(1);
+    }
+    50% {
+        transform: translateZ(5px) rotateY(1.5deg) rotateX(1deg) scale(1.01);
+    }
+}
+
+.collage-photo:nth-child(1) { animation: photoFloat 9s ease-in-out infinite alternate; }
+.collage-photo:nth-child(2) { animation: photoFloat 8s ease-in-out infinite alternate 0.5s; }
+.collage-photo:nth-child(3) { animation: photoFloat 7s ease-in-out infinite alternate 1s; }
+.collage-photo:nth-child(4) { animation: photoFloat 10s ease-in-out infinite alternate 1.5s; }
+.collage-photo:nth-child(5) { animation: photoFloat 8.5s ease-in-out infinite alternate 2s; }
+.collage-photo:nth-child(6) { animation: photoFloat 9.5s ease-in-out infinite alternate 2.5s; }
+.collage-photo:nth-child(7) { animation: photoFloat 7.5s ease-in-out infinite alternate 3s; }
+.collage-photo:nth-child(8) { animation: photoFloat 11s ease-in-out infinite alternate 3.5s; }
+.collage-photo:nth-child(9) { animation: photoFloat 8s ease-in-out infinite alternate 4s; }
+.collage-photo:nth-child(10) { animation: photoFloat 9s ease-in-out infinite alternate 4.5s; }
+.collage-photo:nth-child(11) { animation: photoFloat 7s ease-in-out infinite alternate 5s; }
+.collage-photo:nth-child(12) { animation: photoFloat 10s ease-in-out infinite alternate 5.5s; }
+
+
+
+
+
+/* Improved image loading and display */
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* Responsive Moving Collage */
+@media (max-width: 1024px) {
+    .collage-grid {
+        width: calc(100vh - 40px);
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .collage-track {
+        width: calc(200vh + 80px);
+        animation: smoothLoop 50s linear infinite;
+    }
+}
+
 @media (max-width: 768px) {
-    .collage {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 4px;
-        padding: 5px;
+    .collage-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        width: calc(100vh - 30px);
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .collage-photo {
+        border-radius: 14px;
+    }
+    
+    .collage-track {
+        width: calc(200vh + 60px);
+        animation: smoothLoop 40s linear infinite;
     }
 }
 
 @media (max-width: 480px) {
-    .collage {
+    .collage-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2px;
-        padding: 2px;
+        grid-template-rows: repeat(6, 1fr);
+        width: calc(100vh - 20px);
+        gap: 12px;
+        padding: 10px;
     }
-    .collage img {
-        min-height: 120px;
-        border-radius: 4px;
+    
+    .collage-photo {
+        border-radius: 12px;
+    }
+    
+    .collage-photo::before {
+        background:
+            radial-gradient(circle at top left, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%),
+            radial-gradient(circle at top right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%),
+            radial-gradient(circle at bottom left, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%),
+            radial-gradient(circle at bottom right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%);
+    }
+    
+    .collage-track {
+        width: calc(200vh + 40px);
+        animation: smoothLoop 30s linear infinite;
     }
 }
 
-/* Extra small devices (very small phones) */
 @media (max-width: 360px) {
-    .collage {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1px;
-        padding: 1px;
+    .collage-grid {
+        gap: 10px;
+        padding: 8px;
     }
-    .collage img {
-        min-height: 100px;
-        border-radius: 3px;
+    
+    .collage-photo {
+        border-radius: 10px;
     }
-}
-
-@media (min-width: 1200px) {
-    .collage {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 8px;
+    
+    .collage-track {
+        width: calc(200vh + 32px);
+        animation: smoothLoop 25s linear infinite;
     }
 }
 
-@keyframes slide {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
-@keyframes zoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
-}
 
 /* Vignette */
 .vignette {
@@ -393,14 +533,97 @@ audio { display: none; }
 
 <!-- 🎞️ MAIN -->
 <div class="bg">
-    <div class="track">
-        <div class="collage">
-            <img src="4.jpg"><img src="5.jpg"><img src="6.jpg"><img src="7.jpg">
-            <img src="8.jpg"><img src="9.jpg"><img src="1.jpg"><img src="2.jpg">
-        </div>
-        <div class="collage">
-            <img src="4.jpg"><img src="5.jpg"><img src="6.jpg"><img src="7.jpg">
-            <img src="8.jpg"><img src="9.jpg"><img src="1.jpg"><img src="2.jpg">
+    <div class="collage-showcase">
+        <div class="collage-track">
+            <!-- First set - original collage -->
+            <div class="collage-grid">
+                <!-- Row 1 -->
+                <div class="collage-photo">
+                    <img src="1.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="2.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="3.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="4.jpg" class="collage-image">
+                </div>
+                
+                <!-- Row 2 -->
+                <div class="collage-photo">
+                    <img src="5.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="6.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="7.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="8.jpg" class="collage-image">
+                </div>
+                
+                <!-- Row 3 -->
+                <div class="collage-photo">
+                    <img src="9.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="1.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="2.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="3.jpg" class="collage-image">
+                </div>
+            </div>
+            
+            <!-- Second set - creates seamless loop -->
+            <div class="collage-grid">
+                <!-- Row 1 -->
+                <div class="collage-photo">
+                    <img src="1.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="2.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="3.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="4.jpg" class="collage-image">
+                </div>
+                
+                <!-- Row 2 -->
+                <div class="collage-photo">
+                    <img src="5.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="6.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="7.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="8.jpg" class="collage-image">
+                </div>
+                
+                <!-- Row 3 -->
+                <div class="collage-photo">
+                    <img src="9.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="1.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="2.jpg" class="collage-image">
+                </div>
+                <div class="collage-photo">
+                    <img src="3.jpg" class="collage-image">
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -576,6 +799,42 @@ setTimeout(() => {
     
     setTimeout(() => intro.remove(), 2500);
 }, 12000);
+
+/* Sparkle effects for collage */
+const sparkleInterval = setInterval(() => {
+    const collageContainer = document.querySelector('.collage-container');
+    if (collageContainer) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.innerHTML = '✨';
+        sparkle.style.left = Math.random() * collageContainer.offsetWidth + 'px';
+        sparkle.style.top = Math.random() * collageContainer.offsetHeight + 'px';
+        sparkle.style.fontSize = (15 + Math.random() * 10) + 'px';
+        sparkle.style.animationDelay = Math.random() * 2 + 's';
+        collageContainer.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 3000);
+    }
+}, 500);
+</script>
+
+<!-- Simple responsive test -->
+<script>
+// Test responsive behavior
+console.log('Testing responsive design...');
+console.log('Viewport width:', window.innerWidth);
+console.log('Viewport height:', window.innerHeight);
+
+// Test image loading
+window.addEventListener('load', function() {
+    console.log('All resources loaded successfully');
+    const images = document.querySelectorAll('img');
+    console.log('Images loaded:', images.length);
+});
+
+// Test responsive behavior on resize
+window.addEventListener('resize', function() {
+    console.log('Window resized to:', window.innerWidth, 'x', window.innerHeight);
+});
 </script>
 
 </body>
